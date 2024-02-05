@@ -40,6 +40,7 @@ public final class Constants {
 		public static final double kAngleVelocityConversionFactor =
 				kAnglePositionConversionFactor / 60;
 
+
 	}
 
 	public static class DriveConstants {
@@ -92,8 +93,10 @@ public final class Constants {
 		public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 1.6183474732;
 		public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 0.124249989449;
 
-		public static double kMaxSpeedMetersPerSecond = 5;
+		public static final double kMaxSpeedMetersPerSecond = 5;
 		public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
+
+		public static final boolean kIsFieldCentric = true;
 
 	}
 

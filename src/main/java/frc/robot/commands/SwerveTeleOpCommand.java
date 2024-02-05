@@ -57,8 +57,16 @@ public class SwerveTeleOpCommand extends Command {
 		rot = rotLimiter.calculate(rot)
 				* (DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 4);
 
-		ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vxSpeed, vySpeed, rot,
+
+		ChassisSpeeds chassisSpeeds;
+		if (DriveConstants.kIsFieldCentric) {
+			chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vxSpeed, vySpeed, rot,
 				swerveSubsystem.getRotation2d());
+		}
+		else {
+			chassisSpeeds = new ChassisSpeeds(vxSpeed, vySpeed, rot);
+		}
+		
 
 		SwerveModuleState[] moduleStates =
 				DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
