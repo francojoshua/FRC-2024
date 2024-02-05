@@ -72,10 +72,10 @@ public final class Constants {
 		public static final boolean kInverseFrontRightAngleEncoder = true;
 		public static final boolean kInverseBackRightAngleEncoder = true;
 
-		public static final boolean kInverseFrontLeftDriveEncoder = true;
-		public static final boolean kInverseBackLeftDriveEncoder = true;
-		public static final boolean kInverseFrontRightDriveEncoder = false;
-		public static final boolean kInverseBackRightDriveEncoder = false;
+		public static final boolean kInverseFrontLeftDriveEncoder = true; // GOOD
+		public static final boolean kInverseBackLeftDriveEncoder = false; // GOOD
+		public static final boolean kInverseFrontRightDriveEncoder = true; // GOOD
+		public static final boolean kInverseBackRightDriveEncoder = true; // GOOD
 
 		public static final int kFrontLeftDriveAbsoluteEncoderPort = 9;
 		public static final int kFrontRightDriveAbsoluteEncoderPort = 10;
@@ -87,10 +87,10 @@ public final class Constants {
 		public static final boolean kInverseFrontRightDriveAbsoluteEncoder = false;
 		public static final boolean kInverseBackRightDriveAbsoluteEncoder = false;
 
-		public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 4.96549453411;
+		public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 1.73033268493;
 		public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 2.55714332269;
-		public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 4.75840702957;
-		public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 3.02040885857;
+		public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 1.6183474732;
+		public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 0.124249989449;
 
 		public static double kMaxSpeedMetersPerSecond = 5;
 		public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
