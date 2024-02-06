@@ -51,7 +51,7 @@ public class SwerveSubsystem extends SubsystemBase {
 													// live in your Constants class
 						new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
 						new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-						4.5, // Max module speed, in m/s
+						DriveConstants.kMaxDriveVelocity, // Max module speed, in m/s
 						DriveConstants.kTrackWidth, // Drive base radius in meters. Distance from
 													// robot center to furthest
 						// module.
@@ -109,7 +109,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	public void setModuleStates(SwerveModuleState[] desiredStates) {
 		SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates,
-				DriveConstants.kMaxSpeedMetersPerSecond);
+				DriveConstants.kMaxDriveVelocity);
 		frontRight.setDesiredState(desiredStates[0]);
 		frontLeft.setDesiredState(desiredStates[1]);
 		backRight.setDesiredState(desiredStates[2]);

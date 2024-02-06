@@ -37,8 +37,8 @@ public class SwerveModule {
 		driveMotor = new CANSparkMax(constants.driveMotorId(), MotorType.kBrushless);
 		angleMotor = new CANSparkMax(constants.angleMotorId(), MotorType.kBrushless);
 
-		driveMotor.setInverted(constants.invertDriveEncoder());
-		angleMotor.setInverted(constants.invertAngleEncoder());
+		driveMotor.setInverted(constants.invertDriveMotor());
+		angleMotor.setInverted(constants.invertAngleMotor());
 
 		driveEncoder = driveMotor.getEncoder();
 		angleEncoder = angleMotor.getEncoder();
@@ -80,7 +80,7 @@ public class SwerveModule {
 		// It will.
 		state = SwerveModuleState.optimize(state, new Rotation2d(getAnglePosition()));
 
-		driveMotor.set(state.speedMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond);
+		driveMotor.set(state.speedMetersPerSecond / DriveConstants.kMaxDriveVelocity);
 		angleMotor.set(anglePIDController.calculate(getAnglePosition(), state.angle.getRadians()));
 
 		SmartDashboard.putString("Swerve " + moduleId + " state", state.toString());
