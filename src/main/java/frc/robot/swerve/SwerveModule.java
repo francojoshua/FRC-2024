@@ -85,6 +85,8 @@ public class SwerveModule {
 
 		SmartDashboard.putString("Swerve " + absoluteEncoder.getDeviceID() + " state",
 				state.toString());
+		
+		SmartDashboard.putNumber("Absolute Position " + absoluteEncoder.getDeviceID(), Units.radiansToDegrees(getAbsolutePosition()));
 	}
 
 	public double getDrivePosition() {
@@ -96,7 +98,7 @@ public class SwerveModule {
 	}
 
 	public double getAnglePosition() {
-		return angleEncoder.getPosition();
+		return getAbsolutePosition();
 	}
 
 	public double getAngleVelocity() {

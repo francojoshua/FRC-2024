@@ -52,11 +52,15 @@ public class SwerveTeleOpCommand extends Command {
 		rot = Math.abs(rot) > ControllerConstants.kDeadband ? rot : 0.0;
 
 		// use slew limiter here
-		vxSpeed = xLimiter.calculate(vxSpeed) * (DriveConstants.kMaxSpeedMetersPerSecond / 4);
-		vySpeed = yLimiter.calculate(vySpeed) * (DriveConstants.kMaxSpeedMetersPerSecond / 4);
-		rot = rotLimiter.calculate(rot)
-				* (DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 4);
+		// vxSpeed = xLimiter.calculate(vxSpeed) * (DriveConstants.kMaxSpeedMetersPerSecond / 4);
+		// vySpeed = yLimiter.calculate(vySpeed) * (DriveConstants.kMaxSpeedMetersPerSecond / 4);
+		// rot = rotLimiter.calculate(rot)
+		// 		* (DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 4);
 
+
+		vxSpeed = vxSpeed * (DriveConstants.kMaxSpeedMetersPerSecond / 2);
+		vySpeed = vySpeed * (DriveConstants.kMaxSpeedMetersPerSecond / 2);
+		rot = rot * (DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 2);
 
 		ChassisSpeeds chassisSpeeds;
 		if (DriveConstants.kIsFieldCentric) {
