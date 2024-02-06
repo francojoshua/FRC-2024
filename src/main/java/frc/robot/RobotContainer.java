@@ -6,14 +6,10 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.SwerveTeleOpCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -34,8 +30,8 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the trigger bindings
 		swerveSubsystem.setDefaultCommand(
-				new SwerveTeleOpCommand(swerveSubsystem, () -> controller.getLeftY(),
-						() -> controller.getLeftX(), () -> controller.getRightX()));
+				new SwerveTeleOpCommand(swerveSubsystem, () -> -controller.getLeftY(),
+						() -> -controller.getLeftX(), () -> -controller.getRightX()));
 
 
 		configureBindings();
