@@ -6,10 +6,10 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.function.Supplier;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class SwerveTeleOpCommand extends Command {
@@ -44,29 +44,30 @@ public class SwerveTeleOpCommand extends Command {
 		// X FORWARD, Y SIDEAWAYS
 		double vxSpeed = -leftAxisX.get();
 		double vySpeed = -leftAxisY.get();
-		double rot = -rightAxisX.get();
+		double rotation = -rightAxisX.get();
 
 		// Deadband
-		vxSpeed = Math.abs(vxSpeed) > ControllerConstants.kDeadband ? vxSpeed : 0.0;
-		vySpeed = Math.abs(vySpeed) > ControllerConstants.kDeadband ? vySpeed : 0.0;
-		rot = Math.abs(rot) > ControllerConstants.kDeadband ? rot : 0.0;
+		vxSpeed = MathUtil.applyDeadband(vxSpeed, ControllerConstants.kDeadband);
+		vySpeed = MathUtil.applyDeadband(vySpeed, ControllerConstants.kDeadband);
+		rotation = MathUtil.applyDeadband(rotation, ControllerConstants.kDeadband);
+
+
 
 		// use slew limiter here
 		vxSpeed = xLimiter.calculate(vxSpeed) * (DriveConstants.kMaxSpeedMetersPerSecond / 4);
 		vySpeed = yLimiter.calculate(vySpeed) * (DriveConstants.kMaxSpeedMetersPerSecond / 4);
-		rot = rotLimiter.calculate(rot)
+		rotation = rotLimiter.calculate(rotation)
 				* (DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 4);
 
 
 		ChassisSpeeds chassisSpeeds;
 		if (DriveConstants.kIsFieldCentric) {
-			chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vxSpeed, vySpeed, rot,
-				swerveSubsystem.getRotation2d());
+			chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vxSpeed, vySpeed, rotation,
+					swerveSubsystem.getRotation2d());
+		} else {
+			chassisSpeeds = new ChassisSpeeds(vxSpeed, vySpeed, rotation);
 		}
-		else {
-			chassisSpeeds = new ChassisSpeeds(vxSpeed, vySpeed, rot);
-		}
-		
+
 
 		SwerveModuleState[] moduleStates =
 				DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
