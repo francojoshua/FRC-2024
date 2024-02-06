@@ -4,9 +4,19 @@
 
 package frc.robot;
 
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.SwerveTeleOpCommand;
 import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -21,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+	private final SendableChooser<Command> autoChooser;
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final CommandXboxController controller =
@@ -33,8 +44,13 @@ public class RobotContainer {
 				new SwerveTeleOpCommand(swerveSubsystem, () -> -controller.getLeftY(),
 						() -> -controller.getLeftX(), () -> -controller.getRightX()));
 
+		// NamedCommands.registerCommand("SwerveTeleOpCommand", CommandAuto);
+
 
 		configureBindings();
+		// build auto chooser. this will use Commands.none() as default option
+		autoChooser = AutoBuilder.buildAutoChooser();
+		SmartDashboard.putData("Auto Mode", autoChooser);
 	}
 
 	/**
@@ -67,6 +83,6 @@ public class RobotContainer {
 	 */
 	public Command getAutonomousCommand() {
 		// An example command will be run in autonomous
-		return Commands.none();
+		return autoChooser.getSelected();
 	}
 }
