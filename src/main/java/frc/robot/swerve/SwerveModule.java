@@ -1,6 +1,5 @@
 package frc.robot.swerve;
 
-import org.littletonrobotics.junction.Logger;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
@@ -11,13 +10,14 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.SwerveConstants;
 
 public class SwerveModule {
+
+	private final int moduleId;
 
 	private final CANSparkMax driveMotor;
 	private final CANSparkMax angleMotor;
@@ -29,25 +29,25 @@ public class SwerveModule {
 	private final CANcoder absoluteEncoder;
 
 	private final boolean inverseAbsoluteEncoder;
-	private final double absoluteEncoderOffset;
+	private final Rotation2d absoluteEncoderOffset;
 
-	public SwerveModule(int driveMotorId, int angleMotorId, int absoluteEncoderId,
-			double absoluteEncoderOffset, boolean inverseDriveMotor, boolean inverseAngleMotor,
-			boolean inverseAbsoluteEncoder) {
-		driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
-		angleMotor = new CANSparkMax(angleMotorId, MotorType.kBrushless);
+	public SwerveModule(int moduleId, SwerveModuleConstants constants) {
+		this.moduleId = moduleId;
 
-		driveMotor.setInverted(inverseDriveMotor);
-		angleMotor.setInverted(inverseAngleMotor);
+		driveMotor = new CANSparkMax(constants.driveMotorId(), MotorType.kBrushless);
+		angleMotor = new CANSparkMax(constants.angleMotorId(), MotorType.kBrushless);
+
+		driveMotor.setInverted(constants.invertDriveEncoder());
+		angleMotor.setInverted(constants.invertAngleEncoder());
 
 		driveEncoder = driveMotor.getEncoder();
 		angleEncoder = angleMotor.getEncoder();
 		initializeEncoders();
 
-		absoluteEncoder = new CANcoder(absoluteEncoderId);
+		absoluteEncoder = new CANcoder(constants.canCoderId());
 
-		this.inverseAbsoluteEncoder = inverseAbsoluteEncoder;
-		this.absoluteEncoderOffset = absoluteEncoderOffset;
+		this.inverseAbsoluteEncoder = constants.invertCanCoder();
+		this.absoluteEncoderOffset = constants.angleOffset();
 
 		anglePIDController = new PIDController(SwerveConstants.kPAngle, 0.0, 0.0);
 		anglePIDController.enableContinuousInput(-Math.PI, Math.PI);
@@ -83,8 +83,7 @@ public class SwerveModule {
 		driveMotor.set(state.speedMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond);
 		angleMotor.set(anglePIDController.calculate(getAnglePosition(), state.angle.getRadians()));
 
-		SmartDashboard.putString("Swerve " + absoluteEncoder.getDeviceID() + " state",
-				state.toString());
+		SmartDashboard.putString("Swerve " + moduleId + " state", state.toString());
 	}
 
 	public double getDrivePosition() {
@@ -103,16 +102,15 @@ public class SwerveModule {
 		return angleEncoder.getVelocity();
 	}
 
-	public double getAbsolutePosition() {
-		StatusSignal<Double> angleSupplier = absoluteEncoder.getAbsolutePosition();
-
-		double angle = Units.rotationsToRadians(angleSupplier.getValue());
+	public Rotation2d getAbsolutePosition() {
+		Rotation2d angle =
+				Rotation2d.fromRotations(absoluteEncoder.getAbsolutePosition().getValue());
 
 		if (Robot.isReal()) {
-			angle = angle - absoluteEncoderOffset;
+			angle.minus(absoluteEncoderOffset);
 		}
 
-		angle = angle * (inverseAbsoluteEncoder ? -1.0 : 1.0);
+		angle = inverseAbsoluteEncoder ? angle.unaryMinus() : angle;
 
 		return angle;
 	}
@@ -123,7 +121,7 @@ public class SwerveModule {
 
 	public void resetEncoders() {
 		driveEncoder.setPosition(0.0);
-		angleEncoder.setPosition(getAbsolutePosition());
+		angleEncoder.setPosition(getAbsolutePosition().getRadians());
 	}
 
 	public void stop() {

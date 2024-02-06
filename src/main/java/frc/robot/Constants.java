@@ -4,9 +4,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.robot.swerve.SwerveModuleConstants;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -49,6 +51,7 @@ public final class Constants {
 		// Distance between right and left wheels
 		public static final double kWheelBase = Units.inchesToMeters(24);
 		// Distance between front and back wheels
+		// POSITIVE Y MEANS LEFT. POSITIVE X MEANS FRONT
 		public static final SwerveDriveKinematics kDriveKinematics =
 				new SwerveDriveKinematics(new Translation2d(kWheelBase / 2, -kTrackWidth / 2), // front
 																								// right
@@ -56,42 +59,74 @@ public final class Constants {
 						new Translation2d(-kWheelBase / 2, -kTrackWidth / 2), // back right
 						new Translation2d(-kWheelBase / 2, kTrackWidth / 2)); // back left
 
-		// POSITIVE Y MEANS LEFT. POSITIVE X MEANS FRONT
 
-		public static final int kFrontRightDriveMotorPort = 2;
-		public static final int kBackRightDriveMotorPort = 4;
-		public static final int kFrontLeftDriveMotorPort = 6;
-		public static final int kBackLeftDriveMotorPort = 8;
+		// Front Right Module (0)
+		public static class Mod0Constants {
+			public static final int driveMotorId = 2;
+			public static final int angleMotorId = 1;
+			public static final int canCoderId = 10;
 
-		public static final int kFrontRightAngleMotorPort = 1;
-		public static final int kBackRightAngleMotorPort = 3;
-		public static final int kFrontLeftAngleMotorPort = 5;
-		public static final int kBackLeftAngleMotorPort = 7;
+			public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.257568);
 
-		public static final boolean kInverseFrontLeftAngleEncoder = true;
-		public static final boolean kInverseBackLeftAngleEncoder = true;
-		public static final boolean kInverseFrontRightAngleEncoder = true;
-		public static final boolean kInverseBackRightAngleEncoder = true;
+			public static final boolean invertDriveEncoder = true;
+			public static final boolean invertAngleEncoder = true;
+			public static final boolean invertCanCoder = false;
 
-		public static final boolean kInverseFrontLeftDriveEncoder = true; // GOOD
-		public static final boolean kInverseBackLeftDriveEncoder = false; // GOOD
-		public static final boolean kInverseFrontRightDriveEncoder = true; // GOOD
-		public static final boolean kInverseBackRightDriveEncoder = true; // GOOD
+			public static final SwerveModuleConstants constants =
+					new SwerveModuleConstants(driveMotorId, angleMotorId, canCoderId, angleOffset,
+							invertDriveEncoder, invertAngleEncoder, invertCanCoder);
+		}
 
-		public static final int kFrontLeftDriveAbsoluteEncoderPort = 9;
-		public static final int kFrontRightDriveAbsoluteEncoderPort = 10;
-		public static final int kBackRightDriveAbsoluteEncoderPort = 11;
-		public static final int kBackLeftDriveAbsoluteEncoderPort = 12;
+		// Front Left Module (1)
+		public static class Mod1Constants {
+			public static final int driveMotorId = 6;
+			public static final int angleMotorId = 5;
+			public static final int canCoderId = 9;
 
-		public static final boolean kInverseFrontLeftDriveAbsoluteEncoder = false;
-		public static final boolean kInverseBackLeftDriveAbsoluteEncoder = false;
-		public static final boolean kInverseFrontRightDriveAbsoluteEncoder = false;
-		public static final boolean kInverseBackRightDriveAbsoluteEncoder = false;
+			public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.275391);
 
-		public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 1.73033268493;
-		public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 2.55714332269;
-		public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 1.6183474732;
-		public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 0.124249989449;
+			public static final boolean invertDriveEncoder = true;
+			public static final boolean invertAngleEncoder = true;
+			public static final boolean invertCanCoder = false;
+
+			public static final SwerveModuleConstants constants =
+					new SwerveModuleConstants(driveMotorId, angleMotorId, canCoderId, angleOffset,
+							invertDriveEncoder, invertAngleEncoder, invertCanCoder);
+		}
+
+		// Back Right Module (2)
+		public static class Mod2Constants {
+			public static final int driveMotorId = 4;
+			public static final int angleMotorId = 3;
+			public static final int canCoderId = 11;
+
+			public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.0197745);
+
+			public static final boolean invertDriveEncoder = true;
+			public static final boolean invertAngleEncoder = true;
+			public static final boolean invertCanCoder = false;
+
+			public static final SwerveModuleConstants constants =
+					new SwerveModuleConstants(driveMotorId, angleMotorId, canCoderId, angleOffset,
+							invertDriveEncoder, invertAngleEncoder, invertCanCoder);
+		}
+
+		// Back Left Module (3)
+		public static class Mod3Constants {
+			public static final int driveMotorId = 8;
+			public static final int angleMotorId = 7;
+			public static final int canCoderId = 11;
+
+			public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.406982);
+
+			public static final boolean invertDriveEncoder = false;
+			public static final boolean invertAngleEncoder = true;
+			public static final boolean invertCanCoder = false;
+
+			public static final SwerveModuleConstants constants =
+					new SwerveModuleConstants(driveMotorId, angleMotorId, canCoderId, angleOffset,
+							invertDriveEncoder, invertAngleEncoder, invertCanCoder);
+		}
 
 		public static final double kMaxSpeedMetersPerSecond = 5;
 		public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
