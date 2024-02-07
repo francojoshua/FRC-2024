@@ -19,6 +19,8 @@ import frc.robot.Constants.SwerveConstants;
 
 public class SwerveModule {
 
+	private final int moduleId;
+
 	private final CANSparkMax driveMotor;
 	private final CANSparkMax angleMotor;
 
@@ -31,23 +33,23 @@ public class SwerveModule {
 	private final boolean inverseAbsoluteEncoder;
 	private final double absoluteEncoderOffset;
 
-	public SwerveModule(int driveMotorId, int angleMotorId, int absoluteEncoderId,
-			double absoluteEncoderOffset, boolean inverseDriveMotor, boolean inverseAngleMotor,
-			boolean inverseAbsoluteEncoder) {
-		driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
-		angleMotor = new CANSparkMax(angleMotorId, MotorType.kBrushless);
+	public SwerveModule(int moduleId, SwerveModuleConstants constants) {
+		this.moduleId = moduleId;
 
-		driveMotor.setInverted(inverseDriveMotor);
-		angleMotor.setInverted(inverseAngleMotor);
+		driveMotor = new CANSparkMax(constants.driveMotorId(), MotorType.kBrushless);
+		angleMotor = new CANSparkMax(constants.angleMotorId(), MotorType.kBrushless);
+
+		driveMotor.setInverted(constants.invertDriveMotor());
+		angleMotor.setInverted(constants.invertAngleMotor());
 
 		driveEncoder = driveMotor.getEncoder();
 		angleEncoder = angleMotor.getEncoder();
 		initializeEncoders();
 
-		absoluteEncoder = new CANcoder(absoluteEncoderId);
+		absoluteEncoder = new CANcoder(constants.canCoderId());
 
-		this.inverseAbsoluteEncoder = inverseAbsoluteEncoder;
-		this.absoluteEncoderOffset = absoluteEncoderOffset;
+		this.inverseAbsoluteEncoder = constants.invertCanCoder();
+		this.absoluteEncoderOffset = constants.angleOffset();
 
 		anglePIDController = new PIDController(SwerveConstants.kPAngle, 0.0, 0.0);
 		anglePIDController.enableContinuousInput(-Math.PI, Math.PI);
@@ -83,7 +85,7 @@ public class SwerveModule {
 		driveMotor.set(state.speedMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond);
 		angleMotor.set(anglePIDController.calculate(getAnglePosition(), state.angle.getRadians()));
 
-		SmartDashboard.putString("Swerve " + absoluteEncoder.getDeviceID() + " state",
+		SmartDashboard.putString("Swerve " + moduleId + " state",
 				state.toString());
 		
 		SmartDashboard.putNumber("Absolute Position " + absoluteEncoder.getDeviceID(), Units.radiansToDegrees(getAbsolutePosition()));
