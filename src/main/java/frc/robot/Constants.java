@@ -118,7 +118,7 @@ public final class Constants {
 
 			public static final double angleOffset = Units.rotationsToRadians(0.533447);
 
-			public static final boolean invertDriveMotor = true;
+			public static final boolean invertDriveMotor = false;
 			public static final boolean invertAngleMotor = true;
 			public static final boolean invertCanCoder = false;
 
