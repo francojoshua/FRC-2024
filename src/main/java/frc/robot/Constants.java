@@ -88,10 +88,10 @@ public final class Constants {
 		public static final boolean kInverseFrontRightDriveAbsoluteEncoder = false;
 		public static final boolean kInverseBackRightDriveAbsoluteEncoder = false;
 
-		public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad =  0.769775 * Math.PI * 2;
-		public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 0.533447 * Math.PI * 2;
-		public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 0.255371 * Math.PI * 2;
-		public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 0.017822 * Math.PI * 2;
+		public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad =  0.771729 * Math.PI * 2;
+		public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 0.723145 * Math.PI * 2;
+		public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 0.246826 * Math.PI * 2;
+		public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 0.791260 * Math.PI * 2;
 
 		public static final double kMaxSpeedMetersPerSecond = 5;
 		public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
@@ -108,5 +108,16 @@ public final class Constants {
 		public static final int UP = 0, RIGHT = 90, DOWN = 180, LEFT = 270;
 		public static final int CONTROLLER1_ID = 0, CONTROLLER2_ID = 1;
 		public static final int PCM_ID = 0;
+	}
+
+	public static class intake{
+		public static final int intake_front = 15;
+		public static final int intake_back = 16;
+		public static final double speed_front = .2;
+		public static final double speed_back = .2;
+		public static final int stator_current_limit = 20;
+		public static final int supply_current_limit = 20;
+		public static final boolean stator_limit_enable = true;
+		public static final boolean supply_limit_enable = true;
 	}
 }
