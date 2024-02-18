@@ -11,7 +11,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -62,7 +61,7 @@ public class RobotContainer {
 
 		controller.a().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading));
 		controller.b().onTrue(Commands.runOnce(swerveSubsystem::resetEncoders));
-		controller.x().whileTrue(new IntakeCommand(intake));
+		controller.x().toggleOnTrue(new IntakeCommand(intake));
 
 
 		// Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,

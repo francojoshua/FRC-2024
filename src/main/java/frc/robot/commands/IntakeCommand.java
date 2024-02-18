@@ -5,6 +5,7 @@
 package frc.robot.commands;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.intake;
 
 public class IntakeCommand extends Command {
 
@@ -18,12 +19,17 @@ public class IntakeCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+	intakesubsystem.setspeed();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-	intakesubsystem.setspeed();
+	if(intakesubsystem.check_note()){
+		//if delay is needed find non locking command or use thread
+		this.cancel();
+	};
   }
 
   // Called once the command ends or is interrupted.
