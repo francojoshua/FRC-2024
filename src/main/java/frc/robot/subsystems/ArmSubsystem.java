@@ -9,20 +9,16 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import frc.robot.Constants.intake;
 
 
-public class IntakeSubsystem extends SubsystemBase {
-	private final TalonFX front;
-	private final TalonFX back;
+public class ArmSubsystem extends SubsystemBase {
 	private final TalonFX armleft;
 	private final TalonFX armright;
 	private final CurrentLimitsConfigs current_limits;
 	private final MotorOutputConfigs motor_output_configs;
 	private final TalonFXConfiguration configs;
 	
-	private double previous_current = 0.0;
+	
 
-	public IntakeSubsystem(){
-		front = new TalonFX(intake.intake_front);
-		back = new TalonFX(intake.intake_back);
+	public ArmSubsystem(){
 		armleft = new TalonFX(17);
 		armright = new TalonFX(18);
 		current_limits = new CurrentLimitsConfigs();
@@ -34,18 +30,15 @@ public class IntakeSubsystem extends SubsystemBase {
 	}
 
 	public void stopmotors(){
-		front.stopMotor();
-		back.stopMotor();
+		armleft.stopMotor();
+		armright.stopMotor();
 	}
 
-	public void setspeed(){
-		front.set(intake.speed_front);
-		back.set(intake.speed_back);
-	}
+
 
 	public void setarm(){
-		armleft.set(.5);
-		armright.set(.5);
+		armleft.set(-1.0);
+		armright.set(1.0);
 	}
 
 	public void motor_configs(){
@@ -59,30 +52,8 @@ public class IntakeSubsystem extends SubsystemBase {
 		configs.withCurrentLimits(current_limits);
 		configs.withMotorOutput(motor_output_configs);
 		
-		front.getConfigurator().apply(configs);
-		back.getConfigurator().apply(configs);
+		
 	}
 
-	public double get_current(){
-		var current = back.getTorqueCurrent();
-		return current.getValue();
-	}
 
-	public boolean check_note(){
-		boolean note = false;
-		if(Math.abs(get_current()) > intake.note_current_threshold){
-			note = true;
-		}
-		return note;
-	}
-
-	@Override
-	public void periodic() {
-		if (previous_current == get_current()) {
-			previous_current = get_current();
-			return;
-		}
-
-		System.out.println(get_current());
-	}
 }

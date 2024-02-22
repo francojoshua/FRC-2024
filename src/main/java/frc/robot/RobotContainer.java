@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.commands.ArmCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -29,6 +31,7 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 	private final IntakeSubsystem intake = new IntakeSubsystem();
+	private final ArmSubsystem armsubsystem = new ArmSubsystem();
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final CommandXboxController controller =
@@ -61,6 +64,7 @@ public class RobotContainer {
 
 		controller.a().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading));
 		controller.b().onTrue(Commands.runOnce(swerveSubsystem::resetEncoders));
+		controller.y().whileTrue(new ArmCommand(armsubsystem));
 		controller.x().toggleOnTrue(new IntakeCommand(intake));
 
 

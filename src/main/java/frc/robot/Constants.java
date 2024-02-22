@@ -113,13 +113,13 @@ public final class Constants {
 	public static class intake{
 		public static final int intake_front = 15;
 		public static final int intake_back = 16;
-		public static final double speed_front = .2;
-		public static final double speed_back = .2;
+		public static final double speed_front = -.25;
+		public static final double speed_back = -.25;
 		public static final int stator_current_limit = 20;
 		public static final int supply_current_limit = 20;
 		public static final boolean stator_limit_enable = true;
 		public static final boolean supply_limit_enable = true;
-		public static final double note_current_threshold = 1;
+		public static final double note_current_threshold = 25;
 		public static final double note_time_threshold = .25;
 	}
 }
