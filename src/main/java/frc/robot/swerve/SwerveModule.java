@@ -5,6 +5,9 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -25,7 +28,11 @@ public class SwerveModule {
 	private final RelativeEncoder driveEncoder;
 	private final RelativeEncoder angleEncoder;
 
-	private final PIDController anglePIDController;
+	// private final PIDController anglePIDController;
+
+	private final SparkPIDController anglePIDController;
+	private final SparkPIDController drivePIDController;
+
 	private final CANcoder absoluteEncoder;
 
 	private final boolean inverseAbsoluteEncoder;
@@ -40,17 +47,49 @@ public class SwerveModule {
 		driveMotor.setInverted(inverseDriveMotor);
 		angleMotor.setInverted(inverseAngleMotor);
 
+		driveMotor.setIdleMode(IdleMode.kBrake);
+		angleMotor.setIdleMode(IdleMode.kCoast);
+
 		driveEncoder = driveMotor.getEncoder();
 		angleEncoder = angleMotor.getEncoder();
+
+		anglePIDController = angleMotor.getPIDController();
+		anglePIDController.setFeedbackDevice(angleEncoder);
+
+		drivePIDController = driveMotor.getPIDController();
+		drivePIDController.setFeedbackDevice(driveEncoder);
+
+
 		initializeEncoders();
 
 		absoluteEncoder = new CANcoder(absoluteEncoderId);
 
 		this.inverseAbsoluteEncoder = inverseAbsoluteEncoder;
 		this.absoluteEncoderOffset = absoluteEncoderOffset;
+		anglePIDController.setP(SwerveConstants.kPAngle);
+		anglePIDController.setI(0.0);
+		anglePIDController.setD(0.0);
 
-		anglePIDController = new PIDController(SwerveConstants.kPAngle, 0.0, 0.0);
-		anglePIDController.enableContinuousInput(-Math.PI, Math.PI);
+		anglePIDController.setPositionPIDWrappingEnabled(true);
+		anglePIDController.setPositionPIDWrappingMaxInput(2 * Math.PI);
+		anglePIDController.setPositionPIDWrappingMinInput(0.0);
+
+		anglePIDController.setOutputRange(-1, 1);
+		anglePIDController.setFF(0.0);
+
+		drivePIDController.setP(0.3);
+		drivePIDController.setI(0.0);
+		drivePIDController.setD(0.0);
+
+		drivePIDController.setOutputRange(-1, 1);
+		drivePIDController.setFF(1 / 5676);
+
+		driveMotor.setSmartCurrentLimit(50);
+		angleMotor.setSmartCurrentLimit(20);
+
+		driveMotor.burnFlash();
+		angleMotor.burnFlash();
+
 
 		resetEncoders();
 	}
@@ -80,8 +119,11 @@ public class SwerveModule {
 		// It will.
 		state = SwerveModuleState.optimize(state, new Rotation2d(getAnglePosition()));
 
-		driveMotor.set(state.speedMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond);
-		angleMotor.set(anglePIDController.calculate(getAnglePosition(), state.angle.getRadians()));
+		//driveMotor.set(state.speedMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond);
+		//angleMotor.set(anglePIDController.calculate(getAnglePosition(), state.angle.getRadians()));
+
+		drivePIDController.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
+		anglePIDController.setReference(state.angle.getRadians(), ControlType.kPosition);
 
 		SmartDashboard.putString("Swerve " + absoluteEncoder.getDeviceID() + " state",
 				state.toString());
