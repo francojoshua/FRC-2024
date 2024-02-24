@@ -8,7 +8,9 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.intake;
 import frc.robot.commands.SwerveTeleOpCommand;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -18,8 +20,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.commands.ArmCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -63,9 +63,14 @@ public class RobotContainer {
 		// .onTrue(new ExampleCommand(m_exampleSubsystem));
 
 		controller.a().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading));
-		controller.b().onTrue(Commands.runOnce(swerveSubsystem::resetEncoders));
-		controller.y().whileTrue(new ArmCommand(armsubsystem));
-		controller.x().toggleOnTrue(new IntakeCommand(intake));
+
+
+		controller.b().toggleOnTrue(Commands.runEnd(() -> armsubsystem.holdArm(), () -> armsubsystem.stopmotors(), armsubsystem));
+		controller.leftTrigger().whileTrue(new ArmCommand(armsubsystem, true));
+		controller.leftBumper().whileTrue(new ArmCommand(armsubsystem, false));
+
+		controller.rightTrigger().toggleOnTrue(new IntakeCommand(intake));
+
 
 
 		// Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,

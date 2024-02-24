@@ -10,41 +10,36 @@ import frc.robot.Constants.intake;
 
 public class IntakeCommand extends Command {
 
-	private final IntakeSubsystem intakesubsystem;
+	private final IntakeSubsystem intakeSubsystem;
 		
 	
-  public IntakeCommand(IntakeSubsystem intakesubsystem) {
-    this.intakesubsystem =  intakesubsystem;
-	addRequirements(intakesubsystem);
+  public IntakeCommand(IntakeSubsystem intakeSubsystem) {
+    this.intakeSubsystem = intakeSubsystem;
+
+	addRequirements(intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-	intakesubsystem.setspeed();
+	intakeSubsystem.setspeed();
 	Timer.delay(.2);;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-	
-
-	//if(intakesubsystem.check_note()){
-		//if delay is needed find non locking command or use thread
-		//this.cancel();
-	//};
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-	intakesubsystem.stopmotors();
+	intakeSubsystem.stopmotors();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return intakesubsystem.check_note();
+    return intakeSubsystem.check_note();
   }
 }

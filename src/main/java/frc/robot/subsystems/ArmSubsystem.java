@@ -6,12 +6,14 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import frc.robot.Constants.intake;
 
 
 public class ArmSubsystem extends SubsystemBase {
-	private final TalonFX armleft;
-	private final TalonFX armright;
+	private final CANSparkMax armleft;
+	private final CANSparkMax armright;
 	private final CurrentLimitsConfigs current_limits;
 	private final MotorOutputConfigs motor_output_configs;
 	private final TalonFXConfiguration configs;
@@ -19,8 +21,8 @@ public class ArmSubsystem extends SubsystemBase {
 	
 
 	public ArmSubsystem(){
-		armleft = new TalonFX(17);
-		armright = new TalonFX(18);
+		armleft = new CANSparkMax(17, MotorType.kBrushed);
+		armright = new CANSparkMax(18, MotorType.kBrushed);
 		current_limits = new CurrentLimitsConfigs();
 		motor_output_configs = new MotorOutputConfigs();
 		configs = new TalonFXConfiguration();
@@ -36,9 +38,14 @@ public class ArmSubsystem extends SubsystemBase {
 
 
 
-	public void setarm(){
-		armleft.set(-1.0);
-		armright.set(1.0);
+	public void setarm(boolean reverse){
+		armleft.set(-0.35 * (reverse ? -1 : 1));
+		armright.set(0.35 * (reverse ? -1 : 1));
+	}
+
+	public void holdArm() {
+		armleft.set(0.1);
+		armright.set(-0.1);
 	}
 
 	public void motor_configs(){
