@@ -18,9 +18,10 @@ public class SwerveTeleOpCommand extends Command {
 	private final Supplier<Double> leftAxisX, leftAxisY, rightAxisX;
 
 	private final SlewRateLimiter xLimiter, yLimiter, rotLimiter;
+	private final Supplier<Boolean> slowModeSupplier;
 
 	public SwerveTeleOpCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> leftAxisX,
-			Supplier<Double> leftAxisY, Supplier<Double> rightAxisX) {
+			Supplier<Double> leftAxisY, Supplier<Double> rightAxisX, Supplier<Boolean> slowModeSupplier) {
 		this.swerveSubsystem = swerveSubsystem;
 		this.leftAxisX = leftAxisX;
 		this.leftAxisY = leftAxisY;
@@ -29,6 +30,8 @@ public class SwerveTeleOpCommand extends Command {
 		this.xLimiter = new SlewRateLimiter(3);
 		this.yLimiter = new SlewRateLimiter(3);
 		this.rotLimiter = new SlewRateLimiter(3);
+
+		this.slowModeSupplier = slowModeSupplier;
 
 		addRequirements(swerveSubsystem);
 	}
@@ -56,6 +59,12 @@ public class SwerveTeleOpCommand extends Command {
 		vySpeed = yLimiter.calculate(vySpeed) * (DriveConstants.kMaxSpeedMetersPerSecond);
 		rot = rotLimiter.calculate(rot)
 				* (DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
+
+		if (slowModeSupplier.get()) {
+			vxSpeed *= 0.20;
+			vySpeed *= 0.20;
+			rot *= 0.20;
+		}
 
 		ChassisSpeeds chassisSpeeds;
 		if (DriveConstants.kIsFieldCentric) {

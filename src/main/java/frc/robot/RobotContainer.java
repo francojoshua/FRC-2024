@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.intake;
 import frc.robot.commands.SwerveTeleOpCommand;
@@ -13,6 +14,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -37,14 +39,18 @@ public class RobotContainer {
 	private final CommandXboxController controller =
 			new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+	private final Joystick joystick = new Joystick(OperatorConstants.kDriverControllerPort);
+	
+
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		// Configure the trigger bindings
 		swerveSubsystem.setDefaultCommand(
 				new SwerveTeleOpCommand(swerveSubsystem, () -> controller.getLeftY(),
-						() -> controller.getLeftX(), () -> controller.getRightX()));
+						() -> controller.getLeftX(), () -> controller.getRightX(), () -> joystick.getRawButton(ControllerConstants.LY_ID)));
 
 
+		
 		configureBindings();
 	}
 
@@ -61,13 +67,13 @@ public class RobotContainer {
 		// Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(m_exampleSubsystem::exampleCondition)
 		// .onTrue(new ExampleCommand(m_exampleSubsystem));
+		
 
 		controller.a().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading));
 
-
 		controller.b().toggleOnTrue(Commands.runEnd(() -> armsubsystem.holdArm(), () -> armsubsystem.stopmotors(), armsubsystem));
-		controller.leftTrigger().whileTrue(new ArmCommand(armsubsystem, true));
-		controller.leftBumper().whileTrue(new ArmCommand(armsubsystem, false));
+		controller.leftTrigger().whileTrue(new ArmCommand(armsubsystem));
+		controller.leftBumper().whileTrue(new ArmCommand(armsubsystem));
 
 		controller.rightTrigger().toggleOnTrue(new IntakeCommand(intake));
 

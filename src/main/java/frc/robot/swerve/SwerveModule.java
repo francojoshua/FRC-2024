@@ -66,6 +66,7 @@ public class SwerveModule {
 
 		this.inverseAbsoluteEncoder = inverseAbsoluteEncoder;
 		this.absoluteEncoderOffset = absoluteEncoderOffset;
+		
 		anglePIDController.setP(SwerveConstants.kPAngle);
 		anglePIDController.setI(0.0);
 		anglePIDController.setD(0.0);

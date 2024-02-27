@@ -3,18 +3,20 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class ArmCommand extends Command {
 
 	private final ArmSubsystem armSubsystem;
-	private final boolean reverse;
+
+	private final double POSITION_UP = 160.0;
+	private final double POSITION_DOWN = 0.0;
 		
 	
-  public ArmCommand(ArmSubsystem armsubsystem, boolean reverse) {
+  public ArmCommand(ArmSubsystem armsubsystem) {
     this.armSubsystem =  armsubsystem;
-	this.reverse = reverse;
 	
 	addRequirements(armsubsystem);
   }
@@ -22,25 +24,35 @@ public class ArmCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-	
-	
+		if (armSubsystem.getAbsoluteEncoderPosition() > (POSITION_UP - 10)) {
+			armSubsystem.setPosition(POSITION_DOWN);	
+		}
+		else {
+			armSubsystem.setPosition(POSITION_UP);
+		}
+		System.out.println("Beginning SetArmPosition");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-	armSubsystem.setarm(reverse);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-	armSubsystem.stopmotors();
+	//armSubsystem.stopmotors();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-   return false;
+   if (Math.abs(armSubsystem.getAbsoluteEncoderPosition() - 160.0) <= 0.030) {
+      System.out.println("SetArmPosition Complete");
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 }
