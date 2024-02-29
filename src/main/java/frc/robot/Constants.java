@@ -23,7 +23,7 @@ public final class Constants {
 	}
 
 	public static class SwerveConstants {
-		public static final double kPAngle = 0.75;
+		public static final double kPAngle = 0.65;
 		public static final double kIAngle = 0.0;
 		public static final double kDAngle = 0.0;
 		public static final double kFFAngle = 0.0;
@@ -131,8 +131,8 @@ public final class Constants {
 	public static class intake{
 		public static final int intake_front = 15;
 		public static final int intake_back = 16;
-		public static final double speed_front = -.25;
-		public static final double speed_back = -.25;
+		public static final double speed_front = -.35;
+		public static final double speed_back = -.35;
 		public static final int stator_current_limit = 80;
 		public static final int supply_current_limit = 40;
 		public static final boolean stator_limit_enable = true;
