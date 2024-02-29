@@ -12,9 +12,11 @@ public class IntakeCommand extends Command {
 
 	private final IntakeSubsystem intakeSubsystem;
 		
+	private final boolean autoStop;
 	
-  public IntakeCommand(IntakeSubsystem intakeSubsystem) {
+  public IntakeCommand(IntakeSubsystem intakeSubsystem, boolean autoStop) {
     this.intakeSubsystem = intakeSubsystem;
+	this.autoStop = autoStop;
 
 	addRequirements(intakeSubsystem);
   }
@@ -40,6 +42,6 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return intakeSubsystem.check_note();
+    return autoStop && intakeSubsystem.check_note();
   }
 }

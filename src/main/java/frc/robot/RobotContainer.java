@@ -72,10 +72,10 @@ public class RobotContainer {
 		controller.a().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading));
 
 		controller.leftTrigger().onTrue(new ArmCommand(armsubsystem, 8));
-		controller.leftBumper().onTrue(new ArmCommand(armsubsystem, 160));
+		controller.leftBumper().onTrue(new ArmCommand(armsubsystem, 155));
 
-		controller.rightTrigger().toggleOnTrue(new IntakeCommand(intake));
-		controller.rightTrigger().toggleOnTrue(new IntakeCommand(intake));
+		controller.rightTrigger().toggleOnTrue(new IntakeCommand(intake, true));
+		controller.b().toggleOnTrue(new IntakeCommand(intake, false));
 
 
 		controller.rightBumper().onTrue(Commands.runOnce(swerveSubsystem::toggleSlowMode));
