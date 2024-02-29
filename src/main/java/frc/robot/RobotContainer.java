@@ -75,7 +75,7 @@ public class RobotContainer {
 		controller.leftBumper().onTrue(new ArmCommand(armsubsystem, 155));
 
 		controller.rightTrigger().toggleOnTrue(new IntakeCommand(intake, true));
-		controller.b().toggleOnTrue(new IntakeCommand(intake, false));
+		controller.b().onTrue(new IntakeCommand(intake, false).withTimeout(1.5));
 
 
 		controller.rightBumper().onTrue(Commands.runOnce(swerveSubsystem::toggleSlowMode));
