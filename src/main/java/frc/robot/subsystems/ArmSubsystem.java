@@ -31,26 +31,27 @@ public class ArmSubsystem extends SubsystemBase {
 		armRight.restoreFactoryDefaults();
 		armLeft.restoreFactoryDefaults();
 
+		armRight.setInverted(true);
+
 		armLeft.follow(armRight, true);
 
 		this.pidController = armRight.getPIDController();
 		this.absoluteEncoder = armRight.getAbsoluteEncoder(Type.kDutyCycle);
 
 		absoluteEncoder.setPositionConversionFactor(360);
-		absoluteEncoder.setZeroOffset(246.1881638);
+		absoluteEncoder.setZeroOffset(244.4518089);
 
 		armRight.setSmartCurrentLimit(40);
 		armLeft.setSmartCurrentLimit(40);
 
 		pidController.setFeedbackDevice(absoluteEncoder);
-
-		pidController.setP(0.1);
-		pidController.setI(0.0);
+		pidController.setP(0.012);
+		pidController.setI(0.000000001);
 		pidController.setD(0.0);
 
 		pidController.setFF(0.000015);
 
-		pidController.setOutputRange(-0.35, 0.35);
+		pidController.setOutputRange(-0.40, 0.40);
 
 		pidController.setPositionPIDWrappingEnabled(true);
 		pidController.setPositionPIDWrappingMinInput(0);

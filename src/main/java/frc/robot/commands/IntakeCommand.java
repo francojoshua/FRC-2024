@@ -23,7 +23,7 @@ public class IntakeCommand extends Command {
   @Override
   public void initialize() {
 	intakeSubsystem.setspeed();
-	Timer.delay(.2);;
+	Timer.delay(.3);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

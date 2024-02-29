@@ -11,12 +11,12 @@ public class ArmCommand extends Command {
 
 	private final ArmSubsystem armSubsystem;
 
-	private final double POSITION_UP = 160.0;
-	private final double POSITION_DOWN = 0.0;
+	private final double position;
 		
 	
-  public ArmCommand(ArmSubsystem armsubsystem) {
+  public ArmCommand(ArmSubsystem armsubsystem, double position) {
     this.armSubsystem =  armsubsystem;
+	this.position = position;
 	
 	addRequirements(armsubsystem);
   }
@@ -24,12 +24,7 @@ public class ArmCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-		if (armSubsystem.getAbsoluteEncoderPosition() > (POSITION_UP - 10)) {
-			armSubsystem.setPosition(POSITION_DOWN);	
-		}
-		else {
-			armSubsystem.setPosition(POSITION_UP);
-		}
+		armSubsystem.setPosition(position);
 		System.out.println("Beginning SetArmPosition");
   }
 
@@ -47,7 +42,7 @@ public class ArmCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-   if (Math.abs(armSubsystem.getAbsoluteEncoderPosition() - 160.0) <= 0.030) {
+   if (Math.abs(armSubsystem.getAbsoluteEncoderPosition() - position) <= 0.030) {
       System.out.println("SetArmPosition Complete");
       return true;
     }

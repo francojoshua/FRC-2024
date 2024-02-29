@@ -110,7 +110,7 @@ public class SwerveModule {
 		return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getAnglePosition()));
 	}
 
-	public void setDesiredState(SwerveModuleState state) {
+	public void setDesiredState(SwerveModuleState state, boolean isSlowModeEnabled) {
 		if (Math.abs(state.speedMetersPerSecond) < 0.001) {
 			stop();
 			return;
@@ -123,7 +123,7 @@ public class SwerveModule {
 		//driveMotor.set(state.speedMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond);
 		//angleMotor.set(anglePIDController.calculate(getAnglePosition(), state.angle.getRadians()));
 
-		drivePIDController.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
+		drivePIDController.setReference(state.speedMetersPerSecond * (isSlowModeEnabled ? 0.2 : 1), ControlType.kVelocity);
 		anglePIDController.setReference(state.angle.getRadians(), ControlType.kPosition);
 
 		SmartDashboard.putString("Swerve " + absoluteEncoder.getDeviceID() + " state",

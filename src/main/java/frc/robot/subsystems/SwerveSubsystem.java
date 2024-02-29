@@ -58,6 +58,8 @@ public class SwerveSubsystem extends SubsystemBase {
 					new SwerveModulePosition(), new SwerveModulePosition(),},
 			new Pose2d(0, 0, new Rotation2d()));
 
+	private boolean isSlowModeEnabled = false;
+
 	public void zeroHeading() {
 		gyro.reset(); // sets yaw to 0
 	}
@@ -77,10 +79,10 @@ public class SwerveSubsystem extends SubsystemBase {
 	public void setModuleStates(SwerveModuleState[] desiredStates) {
 		SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates,
 				DriveConstants.kMaxSpeedMetersPerSecond);
-		frontRight.setDesiredState(desiredStates[0]);
-		frontLeft.setDesiredState(desiredStates[1]);
-		backRight.setDesiredState(desiredStates[2]);
-		backLeft.setDesiredState(desiredStates[3]);
+		frontRight.setDesiredState(desiredStates[0], isSlowModeEnabled);
+		frontLeft.setDesiredState(desiredStates[1], isSlowModeEnabled);
+		backRight.setDesiredState(desiredStates[2], isSlowModeEnabled);
+		backLeft.setDesiredState(desiredStates[3], isSlowModeEnabled);
 
 		Logger.recordOutput("MyStates", desiredStates);
 	}
@@ -97,6 +99,10 @@ public class SwerveSubsystem extends SubsystemBase {
 		frontLeft.resetEncoders();
 		backRight.resetEncoders();
 		backLeft.resetEncoders();
+	}
+
+	public void toggleSlowMode() {
+		this.isSlowModeEnabled = !isSlowModeEnabled;
 	}
 
 	@Override

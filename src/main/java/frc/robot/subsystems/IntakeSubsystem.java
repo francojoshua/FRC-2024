@@ -28,7 +28,7 @@ public class IntakeSubsystem extends SubsystemBase {
 		configs = new TalonFXConfiguration();
 
 		stopmotors();
-		//motor_configs();
+		motor_configs();
 	}
 
 	public void stopmotors(){
