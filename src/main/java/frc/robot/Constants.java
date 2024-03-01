@@ -23,7 +23,7 @@ public final class Constants {
 	}
 
 	public static class SwerveConstants {
-		public static final double kPAngle = 0.65;
+		public static final double kPAngle = 0.55;
 		public static final double kIAngle = 0.0;
 		public static final double kDAngle = 0.0;
 		public static final double kFFAngle = 0.0;
@@ -137,7 +137,7 @@ public final class Constants {
 		public static final int supply_current_limit = 40;
 		public static final boolean stator_limit_enable = true;
 		public static final boolean supply_limit_enable = true;
-		public static final double note_current_threshold = 40;
+		public static final double note_current_threshold = 32;
 		public static final double note_time_threshold = .25;
 	}
 }

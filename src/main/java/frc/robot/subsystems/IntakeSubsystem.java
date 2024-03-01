@@ -41,6 +41,11 @@ public class IntakeSubsystem extends SubsystemBase {
 		back.set(intake.speed_back);
 	}
 
+	public void setspeed(double num) {
+		front.set(num);
+		back.set(num);
+	}
+
 	public void motor_configs(){
 		current_limits.withStatorCurrentLimit(intake.stator_current_limit);
 		current_limits.withStatorCurrentLimitEnable(intake.stator_limit_enable);
@@ -76,6 +81,6 @@ public class IntakeSubsystem extends SubsystemBase {
 			return;
 		}
 
-		System.out.println(get_current());
+		//System.out.println(get_current());
 	}
 }

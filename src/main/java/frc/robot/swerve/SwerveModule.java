@@ -123,7 +123,7 @@ public class SwerveModule {
 		//driveMotor.set(state.speedMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond);
 		//angleMotor.set(anglePIDController.calculate(getAnglePosition(), state.angle.getRadians()));
 
-		drivePIDController.setReference(state.speedMetersPerSecond * (isSlowModeEnabled ? 0.2 : 1), ControlType.kVelocity);
+		drivePIDController.setReference(state.speedMetersPerSecond * (isSlowModeEnabled ? 0.3 : 1), ControlType.kVelocity);
 		anglePIDController.setReference(state.angle.getRadians(), ControlType.kPosition);
 
 		SmartDashboard.putString("Swerve " + absoluteEncoder.getDeviceID() + " state",

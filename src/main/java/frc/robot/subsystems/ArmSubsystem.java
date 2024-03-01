@@ -51,7 +51,7 @@ public class ArmSubsystem extends SubsystemBase {
 
 		pidController.setFF(0.000015);
 
-		pidController.setOutputRange(-0.40, 0.40);
+		pidController.setOutputRange(-0.35, 0.35);
 
 		pidController.setPositionPIDWrappingEnabled(true);
 		pidController.setPositionPIDWrappingMinInput(0);

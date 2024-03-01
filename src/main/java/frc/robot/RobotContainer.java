@@ -71,11 +71,13 @@ public class RobotContainer {
 
 		controller.a().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading));
 
-		controller.leftTrigger().onTrue(new ArmCommand(armsubsystem, 8));
+		controller.leftTrigger().onTrue(new ArmCommand(armsubsystem, 12));
 		controller.leftBumper().onTrue(new ArmCommand(armsubsystem, 155));
 
 		controller.rightTrigger().toggleOnTrue(new IntakeCommand(intake, true));
 		controller.b().onTrue(new IntakeCommand(intake, false).withTimeout(1.5));
+		controller.y().onTrue(Commands.runEnd(() -> intake.setspeed(-0.1), () -> intake.stopmotors()).withTimeout(0.1));
+
 
 
 		controller.rightBumper().onTrue(Commands.runOnce(swerveSubsystem::toggleSlowMode));
