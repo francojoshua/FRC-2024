@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.intake;
@@ -72,8 +73,8 @@ public class RobotContainer {
 
 		controller.a().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading));
 
-		controller.leftBumper().onTrue(new ArmCommand(armsubsystem, 155));
-		controller.leftTrigger().onTrue(new ArmCommand(armsubsystem, 9.5));
+		controller.leftBumper().onTrue(new ArmCommand(armsubsystem, ArmConstants.kArmUpPosition));
+		controller.leftTrigger().onTrue(new ArmCommand(armsubsystem, ArmConstants.kArmDownPosition));
 
 
 		controller.rightTrigger().toggleOnTrue(new IntakeCommand(intake, true));

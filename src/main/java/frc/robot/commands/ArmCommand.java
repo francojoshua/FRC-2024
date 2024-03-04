@@ -42,7 +42,7 @@ public class ArmCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-   if (Math.abs(armSubsystem.getAbsoluteEncoderPosition() - position) <= 0.030) {
+   if (Math.abs(armSubsystem.getPosition() - position) <= 0.030) {
       System.out.println("SetArmPosition Complete");
       return true;
     }

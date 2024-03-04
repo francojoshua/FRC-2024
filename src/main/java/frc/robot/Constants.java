@@ -140,4 +140,33 @@ public final class Constants {
 		public static final double note_current_threshold = 29;
 		public static final double note_time_threshold = .25;
 	}
+
+	public static class ArmConstants {
+		public static final int kArmRightMotorPort = 17;
+		public static final int kArmLeftMotorPort = 18;
+
+		public static final boolean kInverseArmRightMotor = true;
+		public static final boolean kInverseArmLeftMotor = true;
+
+		public static final int kMotorSmartCurrentLimit = 40;
+
+		public static final double kEncoderConversionFactor = 360;
+		public static final double kEncoderZeroOffest = 244.4518089;
+
+		public static final double kPArm = 0.012;
+		public static final double kIArm = 0.000000001;
+		public static final double kDArm = 0.0;
+
+		public static final double kFFArm = 0.000015;
+
+		public static final NumberRange kPercentOutputRange = new NumberRange(-0.35, 0.35);
+
+		public static final boolean kIsPIDWrappingEnabled = true;
+		public static final NumberRange kPIDWrappingRange = new NumberRange(0.0, 360.0);
+
+		public static final double kArmUpPosition = 155.0;
+		public static final double kArmDownPosition = 9.5;
+	}
+
+	public record NumberRange(double min, double max) {};
 }
