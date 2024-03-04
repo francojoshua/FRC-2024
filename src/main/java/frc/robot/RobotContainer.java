@@ -14,6 +14,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -71,13 +72,13 @@ public class RobotContainer {
 
 		controller.a().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading));
 
-		controller.leftTrigger().onTrue(new ArmCommand(armsubsystem, 12));
 		controller.leftBumper().onTrue(new ArmCommand(armsubsystem, 155));
+		controller.leftTrigger().onTrue(new ArmCommand(armsubsystem, 9.5));
+
 
 		controller.rightTrigger().toggleOnTrue(new IntakeCommand(intake, true));
 		controller.b().onTrue(new IntakeCommand(intake, false).withTimeout(1.5));
 		controller.y().onTrue(Commands.runEnd(() -> intake.setspeed(-0.1), () -> intake.stopmotors()).withTimeout(0.1));
-
 
 
 		controller.rightBumper().onTrue(Commands.runOnce(swerveSubsystem::toggleSlowMode));
