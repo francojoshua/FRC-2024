@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -14,11 +13,11 @@ public class ArmCommand extends Command {
 	private final double position;
 		
 	
-  public ArmCommand(ArmSubsystem armsubsystem, double position) {
-    this.armSubsystem =  armsubsystem;
+  public ArmCommand(ArmSubsystem armSubsystem, double position) {
+    this.armSubsystem =  armSubsystem;
 	this.position = position;
 	
-	addRequirements(armsubsystem);
+	addRequirements(armSubsystem);
   }
 
   // Called when the command is initially scheduled.
