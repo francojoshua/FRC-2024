@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.4721364342823834,
+      "y": 7.142059269846418
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "SlowOff"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftToAmp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RunArm"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RunIntake"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

@@ -1,0 +1,17 @@
+{
+  "robotWidth": 0.89,
+  "robotLength": 0.889,
+  "holonomicMode": true,
+  "pathFolders": [
+    "New Folder",
+    "New New Folder",
+    "ScoreAmp Paths",
+    "New New New New Folder"
+  ],
+  "autoFolders": [],
+  "defaultMaxVel": 3.0,
+  "defaultMaxAccel": 3.0,
+  "defaultMaxAngVel": 540.0,
+  "defaultMaxAngAccel": 720.0,
+  "maxModuleSpeed": 3.5
+}
