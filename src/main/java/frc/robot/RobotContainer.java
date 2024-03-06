@@ -7,22 +7,21 @@ package frc.robot;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.Constants.intake;
 import frc.robot.commands.SwerveTeleOpCommand;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
-import edu.wpi.first.wpilibj.DriverStation;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -35,7 +34,7 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 	private final IntakeSubsystem intake = new IntakeSubsystem();
-	private final ArmSubsystem armsubsystem = new ArmSubsystem();
+	private final ArmSubsystem armSubsystem = new ArmSubsystem();
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final CommandXboxController controller =
@@ -54,6 +53,7 @@ public class RobotContainer {
 
 		
 		configureBindings();
+		configureAuto();
 	}
 
 	/**
@@ -73,8 +73,8 @@ public class RobotContainer {
 
 		controller.a().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading));
 
-		controller.leftBumper().onTrue(new ArmCommand(armsubsystem, ArmConstants.kArmUpPosition));
-		controller.leftTrigger().onTrue(new ArmCommand(armsubsystem, ArmConstants.kArmDownPosition));
+		controller.leftBumper().onTrue(new ArmCommand(armSubsystem, ArmConstants.kArmUpPosition));
+		controller.leftTrigger().onTrue(new ArmCommand(armSubsystem, ArmConstants.kArmDownPosition));
 
 
 		controller.rightTrigger().toggleOnTrue(new IntakeCommand(intake, true));
@@ -91,6 +91,14 @@ public class RobotContainer {
 		// m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 	}
 
+	public void configureAuto() {
+		NamedCommands.registerCommand("RunArm", new ArmCommand(armSubsystem, ArmConstants.kArmUpPosition).withTimeout(1.0));
+		NamedCommands.registerCommand("RunIntake", new IntakeCommand(intake, false).withTimeout(1.5));
+		NamedCommands.registerCommand("SlowOff", new InstantCommand(() -> swerveSubsystem.disableSlowMode()));
+
+	
+	}
+
 	/**
 	 * Use this to pass the autonomous command to the main {@link Robot} class.
 	 *
@@ -98,6 +106,9 @@ public class RobotContainer {
 	 */
 	public Command getAutonomousCommand() {
 		// An example command will be run in autonomous
-		return Commands.none();
+		return new SequentialCommandGroup(
+			new InstantCommand(() -> swerveSubsystem.resetPose(PathPlannerPath.fromPathFile("Test").getPreviewStartingHolonomicPose())),
+			new PathPlannerAuto("ScoreAmp")
+		);
 	}
 }

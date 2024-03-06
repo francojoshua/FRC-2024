@@ -23,7 +23,7 @@ public final class Constants {
 	}
 
 	public static class SwerveConstants {
-		public static final double kPAngle = 0.55;
+		public static final double kPAngle = 0.50;
 		public static final double kIAngle = 0.0;
 		public static final double kDAngle = 0.0;
 		public static final double kFFAngle = 0.0;
@@ -111,7 +111,7 @@ public final class Constants {
 		public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 0.769287 * Math.PI * 2;
 		public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 0.252441 * Math.PI * 2;
 
-		public static final double kMaxSpeedMetersPerSecond = 5;
+		public static final double kMaxSpeedMetersPerSecond = 3.5;
 		public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
 
 		public static final boolean kIsFieldCentric = true;
