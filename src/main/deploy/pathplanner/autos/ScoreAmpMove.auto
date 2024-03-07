@@ -67,6 +67,12 @@
               }
             ]
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MoveToCenter"
+          }
         }
       ]
     }

@@ -38,7 +38,7 @@ public class SwerveTeleOpCommand extends Command {
 
 	@Override
 	public void initialize() {
-		swerveSubsystem.zeroHeading();
+		//swerveSubsystem.zeroHeading();
 	}
 
 	@Override
