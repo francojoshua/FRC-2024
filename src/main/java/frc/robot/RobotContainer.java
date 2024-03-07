@@ -97,10 +97,12 @@ public class RobotContainer {
 
 	public void configureAuto() {
 		NamedCommands.registerCommand("RunArm", new ArmCommand(armSubsystem, ArmConstants.kArmUpPosition));
+		NamedCommands.registerCommand("RunArmDown", new ArmCommand(armSubsystem, ArmConstants.kArmDownPosition));
 		NamedCommands.registerCommand("RunIntake", new IntakeCommand(intake, false));
 		NamedCommands.registerCommand("SlowOff", new InstantCommand(() -> swerveSubsystem.disableSlowMode()));
 
 		PathPlannerPath scoreAmpPath = PathPlannerPath.fromPathFile("LeftToAmp");
+		PathPlannerPath taxiPath = PathPlannerPath.fromPathFile("Taxi");
 
 		Command blueScoreAmpAuto = new SequentialCommandGroup(
 			new InstantCommand(() -> swerveSubsystem.resetPose(scoreAmpPath.getPreviewStartingHolonomicPose())),
@@ -124,8 +126,13 @@ public class RobotContainer {
 
 		);
 
+		Command taxiAuto = new SequentialCommandGroup(
+			new InstantCommand(() -> swerveSubsystem.resetPose(taxiPath.flipPath().getPreviewStartingHolonomicPose())),
+			AutoBuilder.buildAuto("TaxiMove")
+		);
 
 		chooser.setDefaultOption("Nothing", Commands.none());
+		chooser.addOption("Taxi Move", taxiAuto);
 		chooser.addOption("Blue Score Amp", blueScoreAmpAuto);
 		chooser.addOption("Red Score Amp", redScoreAmpAuto);
 		chooser.addOption("Blue Score Amp & Move", blueScoreAmpDriveAuto);
