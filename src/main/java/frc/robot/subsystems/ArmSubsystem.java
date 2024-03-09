@@ -2,6 +2,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
+
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
@@ -18,6 +21,8 @@ public class ArmSubsystem extends SubsystemBase {
 	private final SparkPIDController pidController;
 	private final SparkAbsoluteEncoder absoluteEncoder;
 
+	private double currentPosition;
+
 	public ArmSubsystem() {
 		armRight = new CANSparkMax(ArmConstants.kArmRightMotorPort, MotorType.kBrushed); // Main Motor
 		armLeft = new CANSparkMax(ArmConstants.kArmLeftMotorPort, MotorType.kBrushed); // Follower Motor
@@ -33,9 +38,11 @@ public class ArmSubsystem extends SubsystemBase {
 
 		this.pidController = armRight.getPIDController();
 		this.absoluteEncoder = armRight.getAbsoluteEncoder(Type.kDutyCycle);
-
+		
 		absoluteEncoder.setPositionConversionFactor(ArmConstants.kEncoderConversionFactor);
 		absoluteEncoder.setZeroOffset(ArmConstants.kEncoderZeroOffest);
+
+		currentPosition = getPosition();
 
 		armRight.setSmartCurrentLimit(ArmConstants.kMotorSmartCurrentLimit);
 		armLeft.setSmartCurrentLimit(ArmConstants.kMotorSmartCurrentLimit);
@@ -44,6 +51,11 @@ public class ArmSubsystem extends SubsystemBase {
 		pidController.setP(ArmConstants.kPArm);
 		pidController.setI(ArmConstants.kIArm);
 		pidController.setD(ArmConstants.kDArm);
+
+		SmartDashboard.putNumber("ArmP", ArmConstants.kPArm);
+		SmartDashboard.putNumber("ArmI", ArmConstants.kIArm);
+		SmartDashboard.putNumber("ArmD", ArmConstants.kDArm);
+		SmartDashboard.putNumber("ArmFF", ArmConstants.kFFArm);
 
 		pidController.setFF(ArmConstants.kFFArm);
 
@@ -59,8 +71,13 @@ public class ArmSubsystem extends SubsystemBase {
 		stopMotors();
 	}
 
+	public void resetPosition() {
+		this.currentPosition = getPosition();
+	}
+
+
 	public void setPosition(double position) {
-		pidController.setReference(position, ControlType.kPosition);
+		this.currentPosition = position;
 	}
 
 	public double getPosition() {
@@ -90,5 +107,17 @@ public class ArmSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 		SmartDashboard.putNumber("Arm Position", getPosition());
+		SmartDashboard.putNumber("Arm Position Up", ArmConstants.kArmUpPosition);
+		SmartDashboard.putNumber("Arm Position Down", ArmConstants.kArmDownPosition);
+		pidController.setReference(currentPosition, ControlType.kPosition);
+
+
+		pidController.setP(SmartDashboard.getNumber("ArmP", ArmConstants.kPArm));
+		pidController.setI(SmartDashboard.getNumber("ArmI", ArmConstants.kIArm));
+		pidController.setD(SmartDashboard.getNumber("ArmD", ArmConstants.kDArm));
+		pidController.setFF(SmartDashboard.getNumber("ArmFF", ArmConstants.kFFArm));
+
+
+		Logger.recordOutput("ArmPosition", getPosition());
 	}
 }

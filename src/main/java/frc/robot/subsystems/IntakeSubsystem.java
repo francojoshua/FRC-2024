@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
@@ -80,6 +81,11 @@ public class IntakeSubsystem extends SubsystemBase {
 			previous_current = get_current();
 			return;
 		}
+
+		SmartDashboard.putNumber("IntakeCurrent", get_current());
+		SmartDashboard.putNumber("IntakeMaxCurrent", intake.note_current_threshold);
+		SmartDashboard.putNumber("IntakeMaxNegCurrent", -intake.note_current_threshold);
+
 
 		//System.out.println(get_current());
 	}

@@ -65,6 +65,8 @@ public class SwerveSubsystem extends SubsystemBase {
 					new SwerveModulePosition(), new SwerveModulePosition(),},
 			new Pose2d(0, 0, new Rotation2d()));
 
+	private double m_headingTargetAngle;
+
 	public SwerveSubsystem() {
 		AutoBuilder.configureHolonomic(this::getPose, // Robot pose supplier
 				this::resetPose, // Method to reset odometry (will be called if your auto has a
@@ -96,6 +98,7 @@ public class SwerveSubsystem extends SubsystemBase {
 				}, this // Reference to this subsystem to set requirements
 		);
 
+		m_headingTargetAngle = getHeading();
 	}
 
 	private boolean isSlowModeEnabled = false;
@@ -114,6 +117,10 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	public Pose2d getPose() {
 		return odometer.getPoseMeters();
+	}
+
+	public Rotation2d getOdometer2d() {
+		return odometer.getPoseMeters().getRotation().rotateBy(Rotation2d.fromDegrees(180));
 	}
 
 	public void resetPose(Pose2d pose) {

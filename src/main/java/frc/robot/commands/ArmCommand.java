@@ -35,13 +35,13 @@ public class ArmCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-	//armSubsystem.stopmotors();
+	//armSubsystem.stopMotors();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-   if (Math.abs(armSubsystem.getPosition() - position) <= 0.030) {
+   if (Math.abs(armSubsystem.getPosition() - position) <= 10) {
       System.out.println("SetArmPosition Complete");
       return true;
     }

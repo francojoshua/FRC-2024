@@ -100,6 +100,7 @@ public class RobotContainer {
 		NamedCommands.registerCommand("RunArmDown", new ArmCommand(armSubsystem, ArmConstants.kArmDownPosition));
 		NamedCommands.registerCommand("RunIntake", new IntakeCommand(intake, false));
 		NamedCommands.registerCommand("SlowOff", new InstantCommand(() -> swerveSubsystem.disableSlowMode()));
+		NamedCommands.registerCommand("ResetArm", new InstantCommand(() -> armSubsystem.resetPosition()));
 
 		PathPlannerPath scoreAmpPath = PathPlannerPath.fromPathFile("LeftToAmp");
 		PathPlannerPath taxiPath = PathPlannerPath.fromPathFile("Taxi");
@@ -137,7 +138,6 @@ public class RobotContainer {
 		chooser.addOption("Red Score Amp", redScoreAmpAuto);
 		chooser.addOption("Blue Score Amp & Move", blueScoreAmpDriveAuto);
 		chooser.addOption("Red Score Amp & Move", redScoreAmpDriveAuto);
-
 
 		SmartDashboard.putData(chooser);
 	}

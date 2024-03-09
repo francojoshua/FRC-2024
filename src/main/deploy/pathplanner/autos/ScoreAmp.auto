@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.4721364342823834,
-      "y": 7.299438081273879
+      "x": 0.4991787919518907,
+      "y": 7.021236913173707
     },
-    "rotation": 0
+    "rotation": -90.0
   },
   "command": {
     "type": "sequential",
@@ -15,6 +15,12 @@
           "type": "named",
           "data": {
             "name": "SlowOff"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ResetArm"
           }
         },
         {
@@ -28,19 +34,32 @@
                 }
               },
               {
-                "type": "race",
+                "type": "sequential",
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "wait",
                       "data": {
-                        "name": "RunArm"
+                        "waitTime": 0.1
                       }
                     },
                     {
-                      "type": "wait",
+                      "type": "race",
                       "data": {
-                        "waitTime": 1.0
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 1.0
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "RunArm"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]

@@ -27,9 +27,9 @@ public class SwerveTeleOpCommand extends Command {
 		this.leftAxisY = leftAxisY;
 		this.rightAxisX = rightAxisX;
 
-		this.xLimiter = new SlewRateLimiter(3);
+		this.xLimiter = new SlewRateLimiter(2);
 		this.yLimiter = new SlewRateLimiter(3);
-		this.rotLimiter = new SlewRateLimiter(3);
+		this.rotLimiter = new SlewRateLimiter(2);
 
 		this.slowModeSupplier = slowModeSupplier;
 
@@ -69,7 +69,7 @@ public class SwerveTeleOpCommand extends Command {
 		ChassisSpeeds chassisSpeeds;
 		if (DriveConstants.kIsFieldCentric) {
 			chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vxSpeed, vySpeed, rot,
-				swerveSubsystem.getRotation2d());
+				swerveSubsystem.getOdometer2d());
 		}
 		else {
 			chassisSpeeds = new ChassisSpeeds(vxSpeed, vySpeed, rot);

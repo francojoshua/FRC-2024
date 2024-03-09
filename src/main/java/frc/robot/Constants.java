@@ -137,7 +137,7 @@ public final class Constants {
 		public static final int supply_current_limit = 40;
 		public static final boolean stator_limit_enable = true;
 		public static final boolean supply_limit_enable = true;
-		public static final double note_current_threshold = 29;
+		public static final double note_current_threshold = 27;
 		public static final double note_time_threshold = .25;
 	}
 
@@ -153,9 +153,9 @@ public final class Constants {
 		public static final double kEncoderConversionFactor = 360;
 		public static final double kEncoderZeroOffest = 244.4518089;
 
-		public static final double kPArm = 0.012;
+		public static final double kPArm = 0.014;
 		public static final double kIArm = 0.000000001;
-		public static final double kDArm = 0.0;
+		public static final double kDArm = 0.001;
 
 		public static final double kFFArm = 0.000015;
 
@@ -164,8 +164,8 @@ public final class Constants {
 		public static final boolean kIsPIDWrappingEnabled = true;
 		public static final NumberRange kPIDWrappingRange = new NumberRange(0.0, 360.0);
 
-		public static final double kArmUpPosition = 155.0;
-		public static final double kArmDownPosition = 9.5;
+		public static final double kArmUpPosition = 160.0;
+		public static final double kArmDownPosition = 6.5;
 	}
 
 	public record NumberRange(double min, double max) {};
