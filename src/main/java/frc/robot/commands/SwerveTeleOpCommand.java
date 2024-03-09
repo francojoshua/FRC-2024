@@ -61,9 +61,9 @@ public class SwerveTeleOpCommand extends Command {
 				* (DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
 
 		if (slowModeSupplier.get()) {
-			vxSpeed *= 0.20;
-			vySpeed *= 0.20;
-			rot *= 0.20;
+			vxSpeed *= 0.10;
+			vySpeed *= 0.10;
+			rot *= 0.10;
 		}
 
 		ChassisSpeeds chassisSpeeds;

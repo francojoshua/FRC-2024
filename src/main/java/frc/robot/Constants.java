@@ -111,8 +111,8 @@ public final class Constants {
 		public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 0.769287 * Math.PI * 2;
 		public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 0.252441 * Math.PI * 2;
 
-		public static final double kMaxSpeedMetersPerSecond = 3.5;
-		public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
+		public static final double kMaxSpeedMetersPerSecond = 8;
+		public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 1.2 * 2 * Math.PI;
 
 		public static final boolean kIsFieldCentric = true;
 
