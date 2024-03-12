@@ -67,6 +67,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	private double m_headingTargetAngle;
 
+	private boolean shouldFlipBoolean = false;
+	private boolean useGyroHeading = false;
+
 	public SwerveSubsystem() {
 		AutoBuilder.configureHolonomic(this::getPose, // Robot pose supplier
 				this::resetPose, // Method to reset odometry (will be called if your auto has a
@@ -120,10 +123,21 @@ public class SwerveSubsystem extends SubsystemBase {
 	}
 
 	public Rotation2d getOdometer2d() {
-		return odometer.getPoseMeters().getRotation().rotateBy(Rotation2d.fromDegrees(180));
+		if (useGyroHeading) {
+			return getRotation2d();
+		}
+
+		Rotation2d rotation = odometer.getPoseMeters().getRotation();
+
+		if (shouldFlipBoolean) {
+			return rotation.rotateBy(Rotation2d.fromDegrees(180));
+		}
+
+		return rotation;
 	}
 
 	public void resetPose(Pose2d pose) {
+		useGyroHeading = false;
 		odometer.resetPosition(getRotation2d(), getModulePositions(), pose);
 	}
 
@@ -159,6 +173,15 @@ public class SwerveSubsystem extends SubsystemBase {
 
 	public void disableSlowMode() {
 		this.isSlowModeEnabled = false;
+	}
+
+	public void useGyroHeading() {
+		useGyroHeading = true;
+		shouldFlipBoolean = false;
+	}
+
+	public void doFlipHeading() {
+		shouldFlipBoolean = true;
 	}
 
 	public ChassisSpeeds getRobotRelativeSpeeds() {

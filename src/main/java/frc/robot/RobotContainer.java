@@ -75,7 +75,7 @@ public class RobotContainer {
 		// .onTrue(new ExampleCommand(m_exampleSubsystem));
 		
 
-		controller.a().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading));
+		controller.a().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading).andThen(Commands.runOnce(swerveSubsystem::useGyroHeading)));
 
 		controller.leftBumper().onTrue(new ArmCommand(armSubsystem, ArmConstants.kArmUpPosition));
 		controller.leftTrigger().onTrue(new ArmCommand(armSubsystem, ArmConstants.kArmDownPosition));
@@ -107,11 +107,13 @@ public class RobotContainer {
 
 		Command blueScoreAmpAuto = new SequentialCommandGroup(
 			new InstantCommand(() -> swerveSubsystem.resetPose(scoreAmpPath.getPreviewStartingHolonomicPose())),
+
 			AutoBuilder.buildAuto("ScoreAmp")
 		);
 
 		Command redScoreAmpAuto = new SequentialCommandGroup(
 			new InstantCommand(() -> swerveSubsystem.resetPose(scoreAmpPath.flipPath().getPreviewStartingHolonomicPose())),
+			new InstantCommand(() -> swerveSubsystem.doFlipHeading()),
 			AutoBuilder.buildAuto("ScoreAmp")
 
 		);
@@ -123,6 +125,8 @@ public class RobotContainer {
 
 		Command redScoreAmpDriveAuto = new SequentialCommandGroup(
 			new InstantCommand(() -> swerveSubsystem.resetPose(scoreAmpPath.flipPath().getPreviewStartingHolonomicPose())),
+			new InstantCommand(() -> swerveSubsystem.doFlipHeading()),
+
 			AutoBuilder.buildAuto("ScoreAmpMove")
 
 		);
