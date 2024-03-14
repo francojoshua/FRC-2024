@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -111,9 +112,23 @@ public class RobotContainer {
 			AutoBuilder.buildAuto("ScoreAmp")
 		);
 
+		Command blueScoreAmpWaitAuto = new SequentialCommandGroup(
+			new InstantCommand(() -> swerveSubsystem.resetPose(scoreAmpPath.getPreviewStartingHolonomicPose())),
+			new WaitCommand(5),
+			AutoBuilder.buildAuto("ScoreAmp")
+		);
+
 		Command redScoreAmpAuto = new SequentialCommandGroup(
 			new InstantCommand(() -> swerveSubsystem.resetPose(scoreAmpPath.flipPath().getPreviewStartingHolonomicPose())),
 			new InstantCommand(() -> swerveSubsystem.doFlipHeading()),
+			AutoBuilder.buildAuto("ScoreAmp")
+
+		);
+
+		Command redScoreAmpWaitAuto = new SequentialCommandGroup(
+			new InstantCommand(() -> swerveSubsystem.resetPose(scoreAmpPath.flipPath().getPreviewStartingHolonomicPose())),
+			new InstantCommand(() -> swerveSubsystem.doFlipHeading()),
+			new WaitCommand(5),
 			AutoBuilder.buildAuto("ScoreAmp")
 
 		);
@@ -136,10 +151,18 @@ public class RobotContainer {
 			AutoBuilder.buildAuto("TaxiMove")
 		);
 
+		Command taxiLittleAuto = new SequentialCommandGroup(
+			new InstantCommand(() -> swerveSubsystem.resetPose(taxiPath.flipPath().getPreviewStartingHolonomicPose())),
+			AutoBuilder.buildAuto("TaxiMoveLittle")
+		);
+
 		chooser.setDefaultOption("Nothing", Commands.none());
 		chooser.addOption("Taxi Move", taxiAuto);
+		chooser.addOption("Taxi Move Little", taxiAuto);
 		chooser.addOption("Blue Score Amp", blueScoreAmpAuto);
 		chooser.addOption("Red Score Amp", redScoreAmpAuto);
+		chooser.addOption("Blue Score Amp Wait", blueScoreAmpAuto);
+		chooser.addOption("Red Score Amp Wait", redScoreAmpAuto);
 		chooser.addOption("Blue Score Amp & Move", blueScoreAmpDriveAuto);
 		chooser.addOption("Red Score Amp & Move", redScoreAmpDriveAuto);
 
