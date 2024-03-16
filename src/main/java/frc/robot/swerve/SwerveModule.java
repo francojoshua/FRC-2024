@@ -166,6 +166,10 @@ public class SwerveModule {
 		return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getAnglePosition()));
 	}
 
+	public SparkPIDController getAnglePIDController() {
+		return anglePIDController;
+	}
+
 	public void resetEncoders() {
 		driveEncoder.setPosition(0.0);
 		angleEncoder.setPosition(getAbsolutePosition());

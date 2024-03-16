@@ -6,6 +6,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,7 +22,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.SwerveConstants;
 import frc.robot.swerve.SwerveModule;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -57,6 +60,8 @@ public class SwerveSubsystem extends SubsystemBase {
 			DriveConstants.kInverseBackRightDriveEncoder,
 			DriveConstants.kInverseBackRightAngleEncoder,
 			DriveConstants.kInverseBackRightDriveAbsoluteEncoder);
+
+	private final SwerveModule[] modules = new SwerveModule[] { frontRight, frontLeft, backRight, backLeft };
 
 	private AHRS gyro = new AHRS(SPI.Port.kMXP);
 	private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(
@@ -100,6 +105,11 @@ public class SwerveSubsystem extends SubsystemBase {
 					return false;
 				}, this // Reference to this subsystem to set requirements
 		);
+
+		SmartDashboard.putNumber("AngleDriveP", SwerveConstants.kPAngle);
+		SmartDashboard.putNumber("AngleDriveI", SwerveConstants.kIAngle);
+		SmartDashboard.putNumber("AngleDriveD", SwerveConstants.kDAngle);
+		SmartDashboard.putNumber("AngleDriveFF", SwerveConstants.kFFAngle);
 
 		m_headingTargetAngle = getHeading();
 	}
@@ -205,6 +215,16 @@ public class SwerveSubsystem extends SubsystemBase {
 				backRight.getPosition(), backLeft.getPosition()};
 	}
 
+	public void setAnglePIDF(double kP, double kI, double kD, double kFF) {
+		for (SwerveModule module : modules) {
+			SparkPIDController controller = module.getAnglePIDController();
+
+			controller.setP(kP);
+			controller.setI(kI);
+			controller.setD(kD);
+			controller.setFF(kFF);
+		}
+	}
 
 	@Override
 	public void periodic() {
@@ -213,6 +233,13 @@ public class SwerveSubsystem extends SubsystemBase {
 
 		SmartDashboard.putNumber("Robot Heading", getHeading());
 		SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+		
+		setAnglePIDF(
+			SmartDashboard.getNumber("AngleDriveP", SwerveConstants.kPAngle),
+			SmartDashboard.getNumber("AngleDriveI", SwerveConstants.kIAngle),
+			SmartDashboard.getNumber("AngleDriveD", SwerveConstants.kDAngle),
+			SmartDashboard.getNumber("AngleDriveFF", SwerveConstants.kFFAngle)
+		);
 	
 	}
 }

@@ -17,6 +17,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
+
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -59,6 +61,8 @@ public class RobotContainer {
 		
 		configureBindings();
 		configureAuto();
+
+		CameraServer.startAutomaticCapture();
 	}
 
 	/**
@@ -86,7 +90,6 @@ public class RobotContainer {
 		controller.b().onTrue(new IntakeCommand(intake, false).withTimeout(1.5));
 		controller.y().onTrue(Commands.runEnd(() -> intake.setspeed(-0.1), () -> intake.stopmotors()).withTimeout(0.1));
 
-
 		controller.rightBumper().onTrue(Commands.runOnce(swerveSubsystem::toggleSlowMode));
 
 
@@ -99,6 +102,7 @@ public class RobotContainer {
 	public void configureAuto() {
 		NamedCommands.registerCommand("RunArm", new ArmCommand(armSubsystem, ArmConstants.kArmUpPosition));
 		NamedCommands.registerCommand("RunArmDown", new ArmCommand(armSubsystem, ArmConstants.kArmDownPosition));
+		NamedCommands.registerCommand("RunArmMid", new ArmCommand(armSubsystem, 110));
 		NamedCommands.registerCommand("RunIntake", new IntakeCommand(intake, false));
 		NamedCommands.registerCommand("SlowOff", new InstantCommand(() -> swerveSubsystem.disableSlowMode()));
 		NamedCommands.registerCommand("ResetArm", new InstantCommand(() -> armSubsystem.resetPosition()));
@@ -114,7 +118,7 @@ public class RobotContainer {
 
 		Command blueScoreAmpWaitAuto = new SequentialCommandGroup(
 			new InstantCommand(() -> swerveSubsystem.resetPose(scoreAmpPath.getPreviewStartingHolonomicPose())),
-			new WaitCommand(5),
+			new WaitCommand(6),
 			AutoBuilder.buildAuto("ScoreAmp")
 		);
 
@@ -128,7 +132,7 @@ public class RobotContainer {
 		Command redScoreAmpWaitAuto = new SequentialCommandGroup(
 			new InstantCommand(() -> swerveSubsystem.resetPose(scoreAmpPath.flipPath().getPreviewStartingHolonomicPose())),
 			new InstantCommand(() -> swerveSubsystem.doFlipHeading()),
-			new WaitCommand(5),
+			new WaitCommand(6),
 			AutoBuilder.buildAuto("ScoreAmp")
 
 		);
@@ -146,6 +150,33 @@ public class RobotContainer {
 
 		);
 
+		Command blueScoreAmpDriveTaxiAuto = new SequentialCommandGroup(
+			new InstantCommand(() -> swerveSubsystem.resetPose(scoreAmpPath.getPreviewStartingHolonomicPose())),
+			AutoBuilder.buildAuto("ScoreAmpTaxi")
+		);
+
+		Command redScoreAmpDriveTaxiAuto = new SequentialCommandGroup(
+			new InstantCommand(() -> swerveSubsystem.resetPose(scoreAmpPath.flipPath().getPreviewStartingHolonomicPose())),
+			new InstantCommand(() -> swerveSubsystem.doFlipHeading()),
+
+			AutoBuilder.buildAuto("ScoreAmpTaxi")
+
+		);
+
+		Command blueScoreAmpDriveTaxiBackAuto = new SequentialCommandGroup(
+			new InstantCommand(() -> swerveSubsystem.resetPose(scoreAmpPath.getPreviewStartingHolonomicPose())),
+			AutoBuilder.buildAuto("ScoreAmpTaxiBack")
+		);
+
+		Command redScoreAmpDriveTaxiBackAuto = new SequentialCommandGroup(
+			new InstantCommand(() -> swerveSubsystem.resetPose(scoreAmpPath.flipPath().getPreviewStartingHolonomicPose())),
+			new InstantCommand(() -> swerveSubsystem.doFlipHeading()),
+
+			AutoBuilder.buildAuto("ScoreAmpTaxiBack")
+
+		);
+
+
 		Command taxiAuto = new SequentialCommandGroup(
 			new InstantCommand(() -> swerveSubsystem.resetPose(taxiPath.flipPath().getPreviewStartingHolonomicPose())),
 			AutoBuilder.buildAuto("TaxiMove")
@@ -158,14 +189,17 @@ public class RobotContainer {
 
 		chooser.setDefaultOption("Nothing", Commands.none());
 		chooser.addOption("Taxi Move", taxiAuto);
-		chooser.addOption("Taxi Move Little", taxiAuto);
+		chooser.addOption("Taxi Move Little", taxiLittleAuto);
 		chooser.addOption("Blue Score Amp", blueScoreAmpAuto);
 		chooser.addOption("Red Score Amp", redScoreAmpAuto);
 		chooser.addOption("Blue Score Amp Wait", blueScoreAmpAuto);
 		chooser.addOption("Red Score Amp Wait", redScoreAmpAuto);
 		chooser.addOption("Blue Score Amp & Move", blueScoreAmpDriveAuto);
 		chooser.addOption("Red Score Amp & Move", redScoreAmpDriveAuto);
-
+		chooser.addOption("Blue Score Amp & Taxi", blueScoreAmpDriveTaxiAuto);
+		chooser.addOption("Red Score Amp & Taxi", redScoreAmpDriveTaxiAuto);
+		chooser.addOption("Blue Score Amp & Taxi & Move Back", blueScoreAmpDriveTaxiBackAuto);
+		chooser.addOption("Red Score Amp & Taxi & Move Back", redScoreAmpDriveTaxiBackAuto);
 		SmartDashboard.putData(chooser);
 	}
 

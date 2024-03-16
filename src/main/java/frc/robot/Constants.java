@@ -28,7 +28,7 @@ public final class Constants {
 		public static final double kDAngle = 0.0;
 		public static final double kFFAngle = 0.0;
 
-		public static final double kPDrive = 0.2;
+		public static final double kPDrive = 0.15;
 		public static final double kIDrive = 0.0;
 		public static final double kDDrive = 0.0;
 		public static final double kFFDrive = 1.0 / 5676.0;

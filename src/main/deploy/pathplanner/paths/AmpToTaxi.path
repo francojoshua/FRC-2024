@@ -3,43 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.19,
-        "y": 7.78
+        "x": 2.04,
+        "y": 7.75
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4790657481670846,
-        "y": 7.3815500418663955
+        "x": 3.001894307465959,
+        "y": 7.732124977886843
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.472361400238816,
-        "y": 7.576313895213793
+        "x": 3.04,
+        "y": 7.75
       },
       "prevControl": {
-        "x": 3.4888039408344538,
-        "y": 7.352335463864286
+        "x": 2.4944541611252586,
+        "y": 7.747967693842143
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1,
-      "rotationDegrees": -85.6839724801343,
-      "rotateFast": false
-    },
-    {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": -1.2188752351313734,
-      "rotateFast": true
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -51,7 +40,7 @@
   "goalEndState": {
     "velocity": 0.0,
     "rotation": -90.0,
-    "rotateFast": true
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "ScoreAmp Paths",
