@@ -137,7 +137,7 @@ public final class Constants {
 		public static final int supply_current_limit = 40;
 		public static final boolean stator_limit_enable = true;
 		public static final boolean supply_limit_enable = true;
-		public static final double note_current_threshold = 27;
+		public static final double note_current_threshold = 35;
 		public static final double note_time_threshold = .25;
 	}
 

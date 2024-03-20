@@ -25,7 +25,7 @@ public class IntakeCommand extends Command {
   @Override
   public void initialize() {
 	intakeSubsystem.setspeed();
-	Timer.delay(.3);
+	//Timer.delay(.3);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,6 +42,6 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return autoStop && intakeSubsystem.check_note();
+    return false; // autoStop && intakeSubsystem.check_note();;
   }
 }

@@ -92,6 +92,8 @@ public class SwerveModule {
 		angleMotor.burnFlash();
 
 
+		angleEncoder.setPosition(getAbsolutePosition());
+
 		resetEncoders();
 	}
 
@@ -141,7 +143,7 @@ public class SwerveModule {
 	}
 
 	public double getAnglePosition() {
-		return getAbsolutePosition();
+		return angleEncoder.getPosition();
 	}
 
 	public double getAngleVelocity() {
@@ -153,9 +155,9 @@ public class SwerveModule {
 
 		double angle = Units.rotationsToRadians(angleSupplier.getValue());
 
-		if (Robot.isReal()) {
-			angle = angle - absoluteEncoderOffset;
-		}
+		// if (Robot.isReal()) {
+		// 	angle = angle - absoluteEncoderOffset;
+		// }
 
 		angle = angle * (inverseAbsoluteEncoder ? -1.0 : 1.0);
 

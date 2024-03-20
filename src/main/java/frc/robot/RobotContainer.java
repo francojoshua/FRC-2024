@@ -86,7 +86,9 @@ public class RobotContainer {
 		controller.leftTrigger().onTrue(new ArmCommand(armSubsystem, ArmConstants.kArmDownPosition));
 
 
-		controller.rightTrigger().toggleOnTrue(new IntakeCommand(intake, true));
+		//controller.rightTrigger().toggleOnTrue(new IntakeCommand(intake, true));
+		controller.rightTrigger().whileTrue(new IntakeCommand(intake, false));
+
 		controller.b().onTrue(new IntakeCommand(intake, false).withTimeout(1.5));
 		controller.y().onTrue(Commands.runEnd(() -> intake.setspeed(-0.1), () -> intake.stopmotors()).withTimeout(0.1));
 
@@ -175,7 +177,6 @@ public class RobotContainer {
 			AutoBuilder.buildAuto("ScoreAmpTaxiBack")
 
 		);
-
 
 		Command taxiAuto = new SequentialCommandGroup(
 			new InstantCommand(() -> swerveSubsystem.resetPose(taxiPath.flipPath().getPreviewStartingHolonomicPose())),
